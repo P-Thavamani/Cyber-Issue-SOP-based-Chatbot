@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Message, SopStepType } from '../types';
-import { initGemini, getSopFromGemini, uploadFileToGemini } from '../services/geminiService';
+import { initGemini, getSopFromGemini, uploadFileToGemini, NOT_CYBER_ISSUE_MESSAGE } from '../services/geminiService';
 import SopStep from '../components/SopStep';
 import Flowchart from '../components/Flowchart';
 
@@ -36,7 +36,7 @@ const AIAssistantPage: React.FC = () => {
         const aiMessage: Message = { 
             id: (Date.now() + 1).toString(), 
             sender: 'ai', 
-            text: sopSteps.length > 0 ? `I have generated a Standard Operating Procedure (SOP) for handling a "${input}". Please review the steps and flowchart below.` : `I couldn't generate an SOP for "${input}". Please try a different query.`,
+            text: sopSteps.length > 0 ? `I have generated a Standard Operating Procedure (SOP) for handling a "${input}". Please review the steps and flowchart below.` : NOT_CYBER_ISSUE_MESSAGE,
             sop: sopSteps 
         };
         setCurrentSop(sopSteps);

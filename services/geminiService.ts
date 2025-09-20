@@ -1,6 +1,8 @@
 import { GoogleGenerativeAI, GenerativeModel, Part } from "@google/generative-ai";
 import { SopStepType, ComplianceStatus } from '../types';
 
+export const NOT_CYBER_ISSUE_MESSAGE = "I am trained to assist with cyber security issues only. Please provide a cyber-related query.";
+
 let generativeModel: GenerativeModel | undefined;
 
 export const initGemini = () => {
@@ -14,6 +16,9 @@ export const initGemini = () => {
 };
 
 const parseSopResponse = (text: string): SopStepType[] => {
+    if (text.includes(NOT_CYBER_ISSUE_MESSAGE)) {
+        return [];
+    }
     try {
         // Attempt to extract JSON even if there's surrounding text
         const jsonMatch = text.match(/```json\n([\s\S]*?)\n```/);
@@ -55,12 +60,16 @@ export const getSopFromGemini = async (prompt: string): Promise<SopStepType[]> =
     }
 
     try {
-        const fullPrompt = `You are a cybersecurity expert. Your task is to provide a Standard Operating Procedure (SOP) for the given cyber issue. \n\nOutput ONLY a JSON array of steps. Each step MUST have a 'title', 'description', and 'compliance' object. The compliance object MUST contain 'nist', 'iso', and 'gdpr' fields, each with a 'status' (must be one of: "Compliant", "PartiallyCompliant", "NotCompliant", "Unknown") and an 'explanation'. Focus on practical, actionable steps for the cyber issue: "${prompt}".\n\nExample JSON structure for the entire SOP (array of steps):\n\`\`\`json\n[\n  {\n    "title": "Identify and Verify",\n    "description": "Confirm the reported email is a phishing attempt. Analyze email headers, sender address, and content for red flags. Do not click any links or download attachments.",\n    "compliance": {\n      "nist": { "status": "Compliant", "explanation": "Aligns with NIST SP 800-61 Rev. 2, focusing on initial detection and analysis." },\n      "iso": { "status": "Compliant", "explanation": "Fulfills ISO 27001 Annex A.12.1.2 requirements for protection against malware." },\n      "gdpr": { "status": "PartiallyCompliant", "explanation": "Contributes to data protection by preventing initial compromise, but direct GDPR articles are more about post-breach." }\n    }\n  },\n  {\n    "title": "Contain the Threat",\n    "description": "Search for and delete all instances of the phishing email from user mailboxes to prevent further clicks. Isolate any machines where users interacted with the email.",\n    "compliance": {\n      "nist": { "status": "Compliant", "explanation": "Directly follows NIST guidelines for containment to limit the incident's scope." },\n      "iso": { "status": "Compliant", "explanation": "Supports ISO 27035 for incident containment and correction." },\n      "gdpr": { "status": "NotCompliant", "explanation": "This step is operational; it doesn't directly map to a GDPR article, which focuses on data rights and breach notification." }\n    }\n  }\n]\`\`\`\n`;
+        const fullPrompt = `You are a cybersecurity expert. Your primary role is to provide a Standard Operating Procedure (SOP) for cyber security incidents and issues. If the user's query is NOT related to a cyber security issue, you MUST respond ONLY with the exact phrase: \"${NOT_CYBER_ISSUE_MESSAGE}\".\n\nIf the query IS a cyber security issue, your task is to provide a Standard Operating Procedure (SOP) for it. Output ONLY a JSON array of steps. Each step MUST have a 'title', 'description', and 'compliance' object. The compliance object MUST contain 'nist', 'iso', and 'gdpr' fields, each with a 'status' (must be one of: "Compliant", "PartiallyCompliant", "NotCompliant", "Unknown") and an 'explanation'. Focus on practical, actionable steps for the cyber issue: "${prompt}".\n\nExample JSON structure for the entire SOP (array of steps):\n\`\`\`json\n[\n  {\n    "title": "Identify and Verify",\n    "description": "Confirm the reported email is a phishing attempt. Analyze email headers, sender address, and content for red flags. Do not click any links or download attachments.",\n    "compliance": {\n      "nist": { "status": "Compliant", "explanation": "Aligns with NIST SP 800-61 Rev. 2, focusing on initial detection and analysis." },\n      "iso": { "status": "Compliant", "explanation": "Fulfills ISO 27001 Annex A.12.1.2 requirements for protection against malware." },\n      "gdpr": { "status": "PartiallyCompliant", "explanation": "Contributes to data protection by preventing initial compromise, but direct GDPR articles are more about post-breach." }\n    }\n  },\n  {\n    "title": "Contain the Threat",\n    "description": "Search for and delete all instances of the phishing email from user mailboxes to prevent further clicks. Isolate any machines where users interacted with the email.",\n    "compliance": {\n      "nist": { "status": "Compliant", "explanation": "Directly follows NIST guidelines for containment to limit the incident's scope." },\n      "iso": { "status": "Compliant", "explanation": "Supports ISO 27035 for incident containment and correction." },\n      "gdpr": { "status": "NotCompliant", "explanation": "This step is operational; it doesn't directly map to a GDPR article, which focuses on data rights and breach notification." }\n    }\n  }\n]\`\`\`\n`;
 
         const result = await generativeModel.generateContent(fullPrompt);
         const response = await result.response;
         const text = response.text();
         console.log("Gemini Raw Response:", text);
+        // Directly return if it's the special message, otherwise parse
+        if (text.includes(NOT_CYBER_ISSUE_MESSAGE)) {
+            return [];
+        }
         return parseSopResponse(text);
 
     } catch (error) {
