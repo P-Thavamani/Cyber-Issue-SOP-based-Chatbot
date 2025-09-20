@@ -1,0 +1,5 @@
+{
+  "name": "CyberFlow",
+  "description": "A secure, responsive, and production-ready web application for managing cybersecurity SOPs with AI assistance. It features an AI chat for generating Standard Operating Procedures, flowchart visualization, and role-based dashboards with analytics.",
+  "requestFramePermissions": []
+}
