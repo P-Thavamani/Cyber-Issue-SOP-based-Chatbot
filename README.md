@@ -1,20 +1,99 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 🤖 Cyber Issue SOP-based Chatbot  
 
-# Run and deploy your AI Studio app
+![GitHub repo size](https://img.shields.io/github/repo-size/P-Thavamani/Cyber-Issue-SOP-based-Chatbot)
+![GitHub stars](https://img.shields.io/github/stars/P-Thavamani/Cyber-Issue-SOP-based-Chatbot?style=social)
+![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/drive/1yi9ukwx0wDOnCli-XncAB_4SHJJj2Ak1
+## 📌 Introduction  
+The **Cyber Issue SOP-based Chatbot** is an interactive web application designed to assist users with **cybersecurity SOPs (Standard Operating Procedures)**.  
+Built with **TypeScript, Vite, and React**, it integrates the **Google Gemini API** to provide smart and reliable responses.  
 
-## Run Locally
+---
 
-**Prerequisites:**  Node.js
+## 📑 Table of Contents  
+- [✨ Features](#-features)  
+- [⚡ Installation](#-installation)  
+- [🚀 Usage](#-usage)  
+- [⚙️ Configuration](#️-configuration)  
+- [📦 Dependencies](#-dependencies)  
+- [📄 License](#-license)  
+
+---
+
+## ✨ Features  
+✅ AI-powered chatbot using **Google Gemini API**  
+✅ Helps with **cybersecurity SOP guidance**  
+✅ Built with **TypeScript + Vite** for performance  
+✅ Responsive **React frontend**  
+✅ Easy local development & setup  
+
+---
+
+## ⚡ Installation  
+
+### Prerequisites  
+- [Node.js](https://nodejs.org/) (LTS recommended)  
+
+### Steps  
+```bash
+# Clone the repository
+git clone https://github.com/P-Thavamani/Cyber-Issue-SOP-based-Chatbot.git
+
+# Navigate into the project folder
+cd Cyber-Issue-SOP-based-Chatbot
+
+# Install dependencies
+npm install
+```
+
+---
+
+## 🚀 Usage  
+
+1. Create a `.env.local` file in the root folder and add your Gemini API key:  
+   ```env
+   GEMINI_API_KEY=your_api_key_here
+   ```
+
+2. Start the development server:  
+   ```bash
+   npm run dev
+   ```
+
+3. Open your browser and visit:  
+   ```
+   http://localhost:5173
+   ```
+
+🎉 Now you can chat with the SOP-based assistant!  
+
+---
+
+## ⚙️ Configuration  
+The project relies on environment variables:  
+
+| Variable       | Description                | Required |
+|----------------|----------------------------|----------|
+| `GEMINI_API_KEY` | API key for Google Gemini | ✅ Yes |
+
+---
+
+## 📦 Dependencies  
+Main dependencies include:  
+
+- ⚛️ React  
+- 🌀 Vite  
+- ⌨️ TypeScript  
+
+For the full list, see [`package.json`](./package.json).  
+
+---
 
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 📄 License  
+This project is licensed under the [MIT License](./LICENSE).  
+
+---
+⭐ If you like this project, don’t forget to **star the repo**!
